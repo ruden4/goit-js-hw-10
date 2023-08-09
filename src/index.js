@@ -1,12 +1,15 @@
 import { fetchBreeds, fetchCatByBreed } from './cat-api.js';
 
 const breedOptionsEl = document.querySelector('.breed-select');
-const loaderEl = document.querySelector('.loader');
-const errorEl = document.querySelector('.error');
+export const loaderEl = document.querySelector('.loader');
+export const errorEl = document.querySelector('.error');
 const catInfoEl = document.querySelector('.cat-info');
 
+loaderEl.classList.add('is-hidden');
+errorEl.classList.add('is-hidden');
 
 function populateBreedOptions() {
+    
   fetchBreeds()
     .then(breeds => {
       const optionsHTML = breeds
@@ -23,6 +26,8 @@ populateBreedOptions();
 breedOptionsEl.addEventListener('change', onChangeOption)
 
 function onChangeOption (e) {
+
+    loaderEl.classList.remove('is-hidden');
     const currentCat = e.target.value;
     fetchCatByBreed(currentCat).then(cat => {
         const catImg = cat[0].url;
@@ -37,8 +42,11 @@ function onChangeOption (e) {
       <p class="catTemp"> Temperament: ${catTemperament}</p>
         `
         catInfoEl.innerHTML = catMarkup;
+        loaderEl.classList.add('is-hidden');
     }).catch(error => {
         console.error(error);
+        errorEl.classList.remove('is-hidden');
+        loaderEl.classList.add('is-hidden');
     });
-    
+    errorEl.classList.add('is-hidden');
 } 

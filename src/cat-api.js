@@ -1,10 +1,12 @@
 const API_KEY = 'live_CfrllrdCWOagVVd0syszXTyG8ZIWt9i8Spe8uOpHnyAKUk0Q7plUoMGCZ2AQAkMF';
 
+
 export function fetchBreeds() {
     return fetch(`https://api.thecatapi.com/v1/breeds?api_key=${API_KEY}`)
       .then(response => {
         if (!response.ok) {
           throw new Error(response.status);
+          
         }
         return response.json();
       })
@@ -17,6 +19,7 @@ export function fetchBreeds() {
     return fetch(`https://api.thecatapi.com/v1/images/search?breed_ids=${breedId}&api_key=${API_KEY}`)
       .then(response => {
         if (!response.ok) {
+
             throw new Error(response.status);
         }
         return response.json();
