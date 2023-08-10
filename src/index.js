@@ -12,17 +12,25 @@ loaderEl.classList.add('is-hidden');
 errorEl.classList.add('is-hidden');
 
 function populateBreedOptions() {
-    
+  loaderEl.classList.remove('is-hidden');
+  breedOptionsEl.classList.add('is-hidden');
   fetchBreeds()
     .then(breeds => {
+      
       const optionsHTML = breeds
         .map(breed => `<option value="${breed.id}">${breed.name}</option>`)
         .join('');
       breedOptionsEl.innerHTML = optionsHTML;
+      loaderEl.classList.add('is-hidden');
+      new SlimSelect({
+          select: '.breed-select'
+        })
     })
+    
     .catch(error => {
       console.error(error);
     });
+    
 }
 populateBreedOptions();
 
@@ -30,9 +38,13 @@ breedOptionsEl.addEventListener('change', onChangeOption)
 
 function onChangeOption (e) {
 
+  catInfoEl.innerHTML = '';
+  catInfoEl.style.backgroundColor = 'white';
+  
     loaderEl.classList.remove('is-hidden');
     const currentCat = e.target.value;
     fetchCatByBreed(currentCat).then(cat => {
+      
         const catImg = cat[0].url;
         const catName = cat[0].breeds[0].name;
         const catDescr = cat[0].breeds[0].description;
@@ -56,9 +68,3 @@ function onChangeOption (e) {
     errorEl.classList.add('is-hidden');
 } 
 
-// new SlimSelect({
-//     select: '.breed-select',
-//     settings: {
-//         placeholderText: 'Choose your cat!',
-//       }
-//   }) ПРИ ПОДКЛЮЧЕНИИ БИБЛИОТЕКИ НЕ ПОДКРУЖАЮТСЯ ПОРОДЫ
